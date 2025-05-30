@@ -1,8 +1,8 @@
 package com.condominio.auth_service.enums;
 
 public enum Role {
-    ADMIN,
-    PROPRIETARIO,
-    RESIDENTE
+    ROLE_ADMIN,
+    ROLE_PROPRIETARIO,
+    ROLE_RESIDENTE
 }
 
