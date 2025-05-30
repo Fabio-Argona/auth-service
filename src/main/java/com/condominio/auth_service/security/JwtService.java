@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class JwtService {
 
     // Chave secreta codificada em Base64 (nunca coloque isso em código real sem criptografia adequada)
-    private static final String SECRET_KEY = "706F6C697469636F6E646F6D696E696F736563757261"; // exemplo: "politicondomínioseguro" em hex/base64
+    private static final String SECRET_KEY = "w4K2oLfLl5vXu9xU1bGpGyk3rAe3/ZqH2UNyzWQqC5E=";
 
     // Extração do username (e-mail) do token
     public String extractUsername(String token) {
