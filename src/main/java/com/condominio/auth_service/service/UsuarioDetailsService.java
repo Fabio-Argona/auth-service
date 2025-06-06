@@ -12,15 +12,15 @@ import com.condominio.auth_service.repository.UsuarioRepository;
 
 @Service
 @RequiredArgsConstructor
-@Primary  // <-- aqui definimos que essa implementação é a principal para UserDetailsService
+@Primary
 public class UsuarioDetailsService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com email: " + email));
-        return usuario; // Assumindo que Usuario implementa UserDetails
     }
+
 }

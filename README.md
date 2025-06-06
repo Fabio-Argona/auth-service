@@ -2,7 +2,7 @@
 
 🔧 Tecnologias
 
-. Backend: Java 21 (Spring Boot)
+. Backend: Java 17 (Spring Boot)
 
 . Banco de Dados: PostgreSQL
 

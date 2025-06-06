@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import com.condominio.auth_service.entity.Usuario;
 
 import java.security.Key;
 import java.util.Date;
@@ -32,8 +33,13 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    // ✅ Alterado para adicionar a role no token
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        if (userDetails instanceof Usuario usuario) {
+            claims.put("role", usuario.getRole().name());
+        }
+        return generateToken(claims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
