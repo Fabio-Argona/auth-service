@@ -19,10 +19,10 @@ Permite cadastro, login e controle de acesso baseado em roles.
 
 ---
 
-📡 Endpoints
-Método	Endpoint	Descrição	Acesso
-POST	/api/auth/register	Registrar novo usuário	Público
-POST	/api/auth/login	Login e retorno do token JWT	Público
-GET	/api/auth/user	Obter dados do usuário logado	Usuário autenticado
-POST	/api/auth/logout	Logout (opcional)	Usuário autenticado
+## 📡 Endpoints
+### Método	Endpoint	Descrição	Acesso
+.POST	/api/auth/register	Registrar novo usuário	Público
+.POST	/api/auth/login	Login e retorno do token JWT	Público
+.GET	/api/auth/user	Obter dados do usuário logado	Usuário autenticado
+.POST	/api/auth/logout	Logout (opcional)	Usuário autenticado
 
