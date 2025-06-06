@@ -9,5 +9,4 @@ class AuthServiceApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

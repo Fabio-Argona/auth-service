@@ -5,6 +5,7 @@ import com.condominio.auth_service.dto.AuthResponse;
 import com.condominio.auth_service.dto.RegisterRequest;
 import com.condominio.auth_service.dto.UserResponse;
 import com.condominio.auth_service.entity.Usuario;
+import com.condominio.auth_service.exception.AutenticacaoException;
 import com.condominio.auth_service.repository.UsuarioRepository;
 import com.condominio.auth_service.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new AutenticacaoException("E-mail já cadastrado.");
+        }
+
         Usuario user = new Usuario();
         user.setNome(request.getNome());
         user.setEmail(request.getEmail());
@@ -39,7 +44,6 @@ public class AuthService {
     }
 
     public AuthResponse authenticate(AuthRequest request) {
-        // Tenta autenticar com o AuthenticationManager usando email e senha (cru)
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -47,16 +51,14 @@ public class AuthService {
                 )
         );
 
-        // Se não lançar exceção, busca o usuário no banco
+        // Agora lançamos uma exceção específica caso o usuário não seja encontrado
         Usuario user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new AutenticacaoException("Usuário não encontrado. Verifique o e-mail e tente novamente."));
 
-        // Gera o token JWT
         String token = jwtService.generateToken(user);
-
-        // Retorna o token
         return new AuthResponse(token);
     }
+
 
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
@@ -66,7 +68,7 @@ public class AuthService {
 
     public Usuario editarUsuario(Long id, RegisterRequest request) {
         Usuario usuario = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com id: " + id));
+                .orElseThrow(() -> new AutenticacaoException("Usuário não encontrado com id: " + id));
 
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
@@ -80,11 +82,8 @@ public class AuthService {
 
     public void excluirUsuario(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado com id: " + id);
+            throw new AutenticacaoException("Usuário não encontrado com id: " + id);
         }
         userRepository.deleteById(id);
     }
-
 }
-
-

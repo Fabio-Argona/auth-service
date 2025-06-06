@@ -3,8 +3,6 @@
 API REST para autenticação e autorização usando JWT, construída com Spring Boot 3.5 e Java 21.  
 Permite cadastro, login e controle de acesso baseado em roles.
 
----
-
 ## 🚀 Tecnologias Utilizadas
 
 | Tecnologia              | Versão       |
