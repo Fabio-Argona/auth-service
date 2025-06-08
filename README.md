@@ -1,43 +1,139 @@
-# auth-service
+# Auth Service - Sistema de Autenticação com JWT
 
-🔧 Tecnologias
+Este projeto é responsável pela autenticação de usuários utilizando JWT e Spring Security. Ele integra-se com outros microsserviços e fornece endpoints seguros para login e cadastro de usuários, protegendo os recursos com controle de acesso baseado em roles (`ROLE_ADMIN`, `ROLE_PROPRIETARIO`, `ROLE_RESIDENTE`).
 
-. Backend: Java 17 (Spring Boot)
+---
 
-. Banco de Dados: PostgreSQL
+## 🧰 Tecnologias Utilizadas
 
-. Infraestrutura: AWS (EC2, S3, IAM)
+- Java 21
+- Spring Boot 3.2+
+- Spring Security
+- JWT (JSON Web Token)
+- PostgreSQL
+- Maven
+- Swagger/OpenAPI
+- Docker
 
-. Segurança: JWT para autenticação e controle de acesso
+---
 
-📦 Módulos Funcionais
-1. Autenticação & Autorização
-JWT com roles: ROLE_PROPRIETARIO, ROLE_RESIDENTE, ROLE_ADMIN
+## ⚙️ Como Executar o Projeto
 
-2. Spring Security + filtros para autorização baseada em rota
+### 1. Subir o PostgreSQL com Docker
 
-3. Login e refresh token
+```bash
+docker run --name auth-postgres   -e POSTGRES_USER=usuario   -e POSTGRES_PASSWORD=senha   -e POSTGRES_DB=authdb   -p 5432:5432   -d postgres
+```
 
-4. endpoints
-. Auth
-   . POST: http://localhost:8080/api/auth/register
-  body json
-   ```
-   {
-  "nome": "João Silva",
-  "email": "joao.silva@email.com",
-  "senha": "12345678"
-}
-  
-   ```
-   
-. Login
-   . POST: http://localhost:8080/api/auth/login
+### 2. Configurar `application.properties`
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/authdb
+spring.datasource.username=usuario
+spring.datasource.password=senha
+spring.jpa.hibernate.ddl-auto=update
+
+# JWT
+auth.jwt.secret=chaveSecretaJWT
+auth.jwt.expiration=3600000
+
+# Swagger
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+```
+
+---
+
+### 3. Executar a Aplicação
+
+Via Maven:
+
+```bash
+./mvnw clean install
+./mvnw spring-boot:run
+```
+
+A aplicação será executada em: `http://localhost:8081`.
+
+---
+
+## 📖 Documentação da API
+
+Acesse a documentação gerada automaticamente via Swagger:
+
+🔗 [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
+
+---
+
+## 🔐 Autenticação JWT
+
+A API gera tokens JWT que devem ser utilizados no header `Authorization` das requisições protegidas:
 
 ```
-{
-  "email": "joao.silva@email.com",
-  "senha": "12345678"
-}
+Authorization: Bearer <token>
 ```
+
+---
+
+## 🧪 Testes com Curl
+
+### 🔍 Buscar usuário inexistente
+
+```bash
+curl -i -X GET "http://localhost:8081/api/usuarios?email=inexistente@teste.com"
+```
+
+### 🔐 Login com senha incorreta
+
+```bash
+curl -i -X POST "http://localhost:8081/api/auth/login"   -H "Content-Type: application/json"   -d '{"email":"usuario@teste.com", "senha":"senha_errada"}'
+```
+
+---
+
+## 💡 Tratamento de Erros
+
+A API conta com uma estrutura de exceções personalizada para fornecer mensagens claras e status HTTP apropriados:
+
+| Exceção                     | Status | Mensagem                              |
+|----------------------------|--------|---------------------------------------|
+| `UsernameNotFoundException`| 404    | Usuário não encontrado                |
+| `AutenticacaoException`    | 401    | Email ou senha inválidos              |
+| `Exception` (genérica)     | 500    | Erro interno inesperado               |
+
+---
+
+## 📂 Estrutura de Pacotes
+
+```
+src/main/java/com/condominio/auth_service/
+├── config                // Configurações do projeto (Swagger, CORS, etc.)
+├── controller            // Endpoints REST
+├── dto                   // Classes de entrada e saída (DTOs)
+├── entity                // Entidades JPA
+├── exception             // Exceções personalizadas e tratamento global
+├── repository            // Interfaces JPA
+├── security              // JWT, filtros, configuração Spring Security
+├── service               // Regras de negócio e autenticação
+└── AuthServiceApplication.java
+```
+
+---
+
+## 📌 Endpoints Principais
+
+| Método | Endpoint               | Descrição                     |
+|--------|------------------------|-------------------------------|
+| POST   | `/api/auth/register`   | Registra novo usuário         |
+| POST   | `/api/auth/login`      | Autentica e retorna JWT       |
+| GET    | `/api/usuarios`        | Busca usuário por email       |
+| GET    | `/swagger-ui.html`     | Interface Swagger             |
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por [Seu Nome Aqui] - Projeto de microsserviços para controle de condomínio.
+
+---
   
