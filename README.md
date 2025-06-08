@@ -6,14 +6,16 @@ Este projeto é responsável pela autenticação de usuários utilizando JWT e S
 
 ## 🧰 Tecnologias Utilizadas
 
-- Java 21
-- Spring Boot 3.2+
-- Spring Security
-- JWT (JSON Web Token)
-- PostgreSQL
-- Maven
-- Swagger/OpenAPI
-- Docker
+- ☕ Java 21 JDK  
+- 🗂 Spring Boot 3.2+
+- 🔑 Spring Security
+- 🔐 JWT (JSON Web Token)
+- 🐘 PostgreSQL
+- 📦 Maven 3.9+ 
+- 📚 Swagger/OpenAPI
+- 🐳 Docker e Docker Compose instalados
+- 🔌 Porta 5432 livre para o PostgreSQL  
+- 🔌 Porta 8081 livre para o serviço 
 
 ---
 
@@ -133,6 +135,123 @@ src/main/java/com/condominio/auth_service/
 | GET    | `/swagger-ui.html`     | Interface Swagger             |
 
 ---
+
+## 🛠️ Build do Projeto
+
+Para gerar o arquivo `.jar` do projeto, execute:
+
+```bash
+mvn clean package -DskipTests
+```
+
+**Explicação:**
+
+- 🧹 `clean`: limpa arquivos de builds anteriores  
+- 📦 `package`: compila e empacota o projeto em `.jar`  
+- ⏩ `-DskipTests`: pula execução dos testes para acelerar o build  
+
+---
+
+## 🐋 Dockerfile
+
+O projeto utiliza multi-stage build para criar a imagem Docker:
+
+```dockerfile
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=builder /app/target/auth-service-0.0.1-SNAPSHOT.jar auth-service.jar
+EXPOSE 8081
+CMD ["java", "-jar", "auth-service.jar"]
+```
+
+---
+
+## 📦 docker-compose.yml
+
+```yaml
+version: "3.8"
+
+services:
+  auth_db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+
+  auth_service:
+    build: .
+    depends_on:
+      - auth_db
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth_db:5432/auth_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+volumes:
+  auth_db_data:
+```
+
+---
+
+## 🔧 Variáveis de Ambiente
+
+Para o container do serviço (`auth_service`), configure as seguintes variáveis:
+
+- 🔗 `SPRING_DATASOURCE_URL`: URL de conexão com o banco (ex: `jdbc:postgresql://auth_db:5432/auth_db`)  
+- 👤 `SPRING_DATASOURCE_USERNAME`: usuário do banco (ex: `postgres`)  
+- 🔒 `SPRING_DATASOURCE_PASSWORD`: senha do banco (ex: `postgres`)  
+
+---
+
+## ▶️ Executando o Projeto
+
+1. 🔎 Certifique-se que as portas 5432 e 8081 estão livres.  
+2. 📂 No diretório do projeto, execute:
+
+```bash
+docker-compose up --build
+```
+
+3. ⏳ Aguarde o download das imagens, build do projeto e inicialização dos containers.  
+4. 🌐 O serviço estará disponível em: [http://localhost:8081](http://localhost:8081)  
+5. 🐘 O banco PostgreSQL estará disponível na porta 5432.  
+
+---
+
+## 🧪 Testando a API
+
+- 📖 Você pode acessar a documentação Swagger na URL:
+
+```
+http://localhost:8081/swagger-ui/index.html
+```
+
+- 🚀 Use as rotas documentadas para testar os endpoints.  
+
+---
+
+## 💡 Dicas
+
+- 🔄 Se quiser rodar o projeto localmente sem Docker, configure o arquivo `application.properties` para conectar-se ao banco PostgreSQL local.  
+- 🛠️ Para rebuildar o projeto sem rodar os testes, utilize `mvn clean package -DskipTests`.  
+- ✅ Para rodar os testes, execute `mvn test`.  
+
+---
+
+
 
 ## 👨‍💻 Autor
 
