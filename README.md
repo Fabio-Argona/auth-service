@@ -240,7 +240,7 @@ Swagger: http://localhost:8081/swagger-ui/index.html
 | POST   | `/auth/register`       | ✅ JWT      |
 | POST   | `/auth/login`          | ✅ JWT      |
 | GET    | `/usuarios`            | ✅ JWT      |
-=======
+
 
 
 ## 🧪 Testando localmente (sem Docker)
