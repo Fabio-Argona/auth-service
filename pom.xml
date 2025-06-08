@@ -16,7 +16,9 @@
 	<artifactId>auth-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>auth-service</name>
-	<description>Microserviço de autenticação do condomínio</description>
+	<description>
+		icroserviço de autenticação do condomínio JWT com roles administracao, proprietario e residente
+	</description>
 
 	<properties>
 		<java.version>21</java.version>
@@ -82,6 +84,12 @@
 			<artifactId>flyway-core</artifactId>
 		</dependency>
 
+		<!-- Swagger -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.1.0</version>
+		</dependency>
 
 		<!-- Lombok -->
 		<dependency>
