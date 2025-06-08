@@ -1,26 +1,43 @@
-# 🔐 API de Autenticação JWT - Auth Service
+# auth-service
 
-API REST para autenticação e autorização usando JWT, construída com Spring Boot 3.5 e Java 21.  
-Permite cadastro, login e controle de acesso baseado em roles.
+🔧 Tecnologias
 
-## 🚀 Tecnologias Utilizadas
+. Backend: Java 17 (Spring Boot)
 
-| Tecnologia              | Versão       |
-|------------------------|--------------|
-| 🟩 Java                | 21           |
-| 🌱 Spring Boot         | 3.5          |
-| 🔒 Spring Security      | JWT          |
-| 📦 Maven               | Última       |
-| 📚 Swagger / OpenAPI   | springdoc-openapi-starter-webmvc-ui 2.8.8 |
-| 🐘 Banco de Dados       | PostgreSQL*  |
-| 🐳 Docker              | Opcional     |
+. Banco de Dados: PostgreSQL
 
----
+. Infraestrutura: AWS (EC2, S3, IAM)
 
-## 📡 Endpoints
-### Método	Endpoint	Descrição	Acesso
-.POST	/api/auth/register	Registrar novo usuário	Público
-.POST	/api/auth/login	Login e retorno do token JWT	Público
-.GET	/api/auth/user	Obter dados do usuário logado	Usuário autenticado
-.POST	/api/auth/logout	Logout (opcional)	Usuário autenticado
+. Segurança: JWT para autenticação e controle de acesso
 
+📦 Módulos Funcionais
+1. Autenticação & Autorização
+JWT com roles: ROLE_PROPRIETARIO, ROLE_RESIDENTE, ROLE_ADMIN
+
+2. Spring Security + filtros para autorização baseada em rota
+
+3. Login e refresh token
+
+4. endpoints
+. Auth
+   . POST: http://localhost:8080/api/auth/register
+  body json
+   ```
+   {
+  "nome": "João Silva",
+  "email": "joao.silva@email.com",
+  "senha": "12345678"
+}
+  
+   ```
+   
+. Login
+   . POST: http://localhost:8080/api/auth/login
+
+```
+{
+  "email": "joao.silva@email.com",
+  "senha": "12345678"
+}
+```
+  
