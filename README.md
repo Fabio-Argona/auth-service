@@ -134,10 +134,6 @@ src/main/java/com/condominio/auth_service/
 
 ---
 
-## 🔮 Colections insomnia
-[Uploading Insomnia_2025-06-07.yaml…]()
-
-
 ## 👨‍💻 Autor
 
 Desenvolvido por Fabio Argona - Projeto de microsserviços para controle de condomínio .
