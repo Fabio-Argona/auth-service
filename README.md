@@ -1,43 +1,39 @@
-# auth-service
+# Auth Service
 
-🔧 Tecnologias
+API de autenticação com JWT desenvolvida em Spring Boot, PostgreSQL, Docker e Flyway.
 
-. Backend: Java 17 (Spring Boot)
+## 🐳 Subindo com Docker
 
-. Banco de Dados: PostgreSQL
-
-. Infraestrutura: AWS (EC2, S3, IAM)
-
-. Segurança: JWT para autenticação e controle de acesso
-
-📦 Módulos Funcionais
-1. Autenticação & Autorização
-JWT com roles: ROLE_PROPRIETARIO, ROLE_RESIDENTE, ROLE_ADMIN
-
-2. Spring Security + filtros para autorização baseada em rota
-
-3. Login e refresh token
-
-4. endpoints
-. Auth
-   . POST: http://localhost:8080/api/auth/register
-  body json
-   ```
-   {
-  "nome": "João Silva",
-  "email": "joao.silva@email.com",
-  "senha": "12345678"
-}
-  
-   ```
-   
-. Login
-   . POST: http://localhost:8080/api/auth/login
-
+```bash
+docker-compose up --build
 ```
-{
-  "email": "joao.silva@email.com",
-  "senha": "12345678"
-}
+
+A aplicação ficará disponível em: http://localhost:8081  
+Swagger: http://localhost:8081/swagger-ui/index.html
+
+## 📦 Build do JAR
+
+```bash
+./mvnw clean package
 ```
-  
+
+## 🧪 Testando localmente (sem Docker)
+
+- PostgreSQL rodando localmente na porta 5432
+- Banco: `auth_db`
+- Usuário: `postgres`
+- Senha: `postgres`
+
+## 📁 Estrutura
+
+- `Dockerfile` — Build do container da aplicação
+- `docker-compose.yml` — Subida do banco e do serviço
+- `application.properties` — Configurações Spring Boot
+
+## 🔐 Endpoints principais
+
+| Método | Endpoint               | Autenticação |
+|--------|------------------------|--------------|
+| POST   | `/auth/register`       | ❌           |
+| POST   | `/auth/login`          | ❌           |
+| GET    | `/usuarios`            | ✅ JWT       |
