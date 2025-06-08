@@ -216,14 +216,45 @@ Para o container do serviço (`auth_service`), configure as seguintes variáveis
 
 ---
 
-## ▶️ Executando o Projeto
-
-1. 🔎 Certifique-se que as portas 5432 e 8081 estão livres.  
-2. 📂 No diretório do projeto, execute:
+## 🐳 Subindo com Docker
 
 ```bash
 docker-compose up --build
 ```
+
+A aplicação ficará disponível em: http://localhost:8081  
+Swagger: http://localhost:8081/swagger-ui/index.html
+
+## 📦 Build do JAR
+
+```bash
+./mvnw clean package
+```
+
+
+
+## 🔐 Endpoints principais
+
+| Método | Endpoint               | Autenticação |
+|--------|------------------------|--------------|
+| POST   | `/auth/register`       | ✅ JWT      |
+| POST   | `/auth/login`          | ✅ JWT      |
+| GET    | `/usuarios`            | ✅ JWT      |
+=======
+
+
+## 🧪 Testando localmente (sem Docker)
+
+- PostgreSQL rodando localmente na porta 5432
+- Banco: `auth_db`
+- Usuário: `postgres`
+- Senha: `postgres`
+
+## 📁 Estrutura
+
+- `Dockerfile` — Build do container da aplicação
+- `docker-compose.yml` — Subida do banco e do serviço
+- `application.properties` — Configurações Spring Boot
 
 3. ⏳ Aguarde o download das imagens, build do projeto e inicialização dos containers.  
 4. 🌐 O serviço estará disponível em: [http://localhost:8081](http://localhost:8081)  
@@ -259,43 +290,3 @@ Desenvolvido por Fabio Argona - Projeto de microsserviços para controle de cond
 
 ---
   
-# Auth Service
-
-API de autenticação com JWT desenvolvida em Spring Boot, PostgreSQL, Docker e Flyway.
-
-## 🐳 Subindo com Docker
-
-```bash
-docker-compose up --build
-```
-
-A aplicação ficará disponível em: http://localhost:8081  
-Swagger: http://localhost:8081/swagger-ui/index.html
-
-## 📦 Build do JAR
-
-```bash
-./mvnw clean package
-```
-
-## 🧪 Testando localmente (sem Docker)
-
-- PostgreSQL rodando localmente na porta 5432
-- Banco: `auth_db`
-- Usuário: `postgres`
-- Senha: `postgres`
-
-## 📁 Estrutura
-
-- `Dockerfile` — Build do container da aplicação
-- `docker-compose.yml` — Subida do banco e do serviço
-- `application.properties` — Configurações Spring Boot
-
-## 🔐 Endpoints principais
-
-| Método | Endpoint               | Autenticação |
-|--------|------------------------|--------------|
-| POST   | `/auth/register`       | ❌           |
-| POST   | `/auth/login`          | ❌           |
-| GET    | `/usuarios`            | ✅ JWT       |
-=======
