@@ -63,6 +63,9 @@ Acesse a documentação gerada automaticamente via Swagger:
 
 🔗 [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
 
+![image](https://github.com/user-attachments/assets/6b85acf9-310c-44cf-8d24-3d5fb289f48b)
+
+
 ---
 
 ## 🔐 Autenticação JWT
